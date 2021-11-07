@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CheckoutKata.Models;
 using CheckoutKata.Services;
 using CheckoutKata.Tests.Fixtures;
@@ -37,6 +38,21 @@ namespace CheckoutKata.Tests
             var actual = basketService.GetBasketSubtotal();
 
             Assert.Equal(expected, actual);
+        }
+        
+        [Theory]
+        [ClassData(typeof(GetBasketSubtotalWithoutPromotionsTestData))]
+        public void GetBasketSubtotal_ManyProductsWithoutPromotions_ReturnsTotal(List<(Product, int)> productAndQuantity,
+            decimal expectedTotalPrice)
+        {
+            var billService = new BasketService();
+            foreach (var (product, quantity) in productAndQuantity)
+            {
+                billService.UpdateBasketItemQuantity(product, quantity);
+            }
+
+            var actual = billService.GetBasketSubtotal();
+            Assert.Equal(expectedTotalPrice, actual);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace CheckoutKata.Tests.Fixtures
             yield return new object[] { _fixtures.Products[0], 3 };
             yield return new object[] { _fixtures.Products[1], 4 };
             yield return new object[] { _fixtures.Products[2], 5 };
+            yield return new object[] { _fixtures.Products[3], 6 };
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
