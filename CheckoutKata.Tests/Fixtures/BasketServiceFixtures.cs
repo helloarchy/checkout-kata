@@ -36,7 +36,7 @@ namespace CheckoutKata.Tests.Fixtures
                 RequiredProduct = productD,
                 RequiredQuantity = 2,
                 DiscountedProduct = productD,
-                DiscountMultiplier = 0.75M,
+                DiscountMultiplier = 0.25M,
             };
 
             Promotions = new List<Promotion> { promotionB, promotionD };

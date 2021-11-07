@@ -8,10 +8,17 @@ namespace CheckoutKata.Tests
 {
     public class UnitTest1
     {
+        private BasketServiceFixtures Fixtures;
+
+        public UnitTest1()
+        {
+            Fixtures = new BasketServiceFixtures();
+        }
+        
         [Fact]
         public void UpdateBasketItemQuantity_NoProduct_DoesNothing()
         {
-            var basketService = new BasketService();
+            var basketService = new BasketService(Fixtures.Promotions);
             basketService.UpdateBasketItemQuantity(null, 0);
 
             Assert.Empty(basketService.Basket);
@@ -21,7 +28,7 @@ namespace CheckoutKata.Tests
         [ClassData(typeof(UpdateBasketItemQuantityTestData))]
         public void UpdateBasketItemQuantity_ManyProducts_AddsAll(Product product, int quantity)
         {
-            var basketService = new BasketService();
+            var basketService = new BasketService(Fixtures.Promotions);
             basketService.UpdateBasketItemQuantity(product, quantity);
 
             Assert.NotEmpty(basketService.Basket);
@@ -31,7 +38,7 @@ namespace CheckoutKata.Tests
         [Fact]
         public void GetBasketSubtotal_NoProduct_ReturnsZero()
         {
-            var basketService = new BasketService();
+            var basketService = new BasketService(Fixtures.Promotions);
             var expected = 0;
             
             basketService.UpdateBasketItemQuantity(null, 0);
@@ -45,7 +52,22 @@ namespace CheckoutKata.Tests
         public void GetBasketSubtotal_ManyProductsWithoutPromotions_ReturnsTotal(List<(Product, int)> productAndQuantity,
             decimal expectedTotalPrice)
         {
-            var billService = new BasketService();
+            var billService = new BasketService(Fixtures.Promotions);
+            foreach (var (product, quantity) in productAndQuantity)
+            {
+                billService.UpdateBasketItemQuantity(product, quantity);
+            }
+
+            var actual = billService.GetBasketSubtotal();
+            Assert.Equal(expectedTotalPrice, actual);
+        }
+        
+        [Theory]
+        [ClassData(typeof(GetBasketSubtotalWithPromotionsTestData))]
+        public void GetBasketSubtotal_ManyProductsWithPromotions_ReturnsTotal(List<(Product, int)> productAndQuantity,
+            decimal expectedTotalPrice)
+        {
+            var billService = new BasketService(Fixtures.Promotions);
             foreach (var (product, quantity) in productAndQuantity)
             {
                 billService.UpdateBasketItemQuantity(product, quantity);

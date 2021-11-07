@@ -9,13 +9,8 @@
         public BasketItem(Product product, int quantity)
         {
             Product = product;
-            UpdateQuantity(quantity);
-        }
-        
-        public void UpdateQuantity(int quantity)
-        {
             Quantity = quantity;
-            Subtotal = Product.UnitPrice * quantity;
+            Subtotal = product.UnitPrice * quantity;
         }
     }
 }
