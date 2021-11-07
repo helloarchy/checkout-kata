@@ -35,5 +35,13 @@ namespace CheckoutKata.Services
                 Basket.Add(new BasketItem(product, quantity));
             }
         }
+        
+        /// <summary>
+        /// Get the total price across all items in the basket
+        /// </summary>
+        public decimal GetBasketSubtotal()
+        {
+            return Basket.Aggregate(0M, (acc, item) => (acc + item.Subtotal));
+        }
     }
 }

@@ -26,5 +26,17 @@ namespace CheckoutKata.Tests
             Assert.NotEmpty(basketService.Basket);
             Assert.Contains(basketService.Basket, item => item.Product == product && item.Quantity == quantity);
         }
+        
+        [Fact]
+        public void GetBasketSubtotal_NoProduct_ReturnsZero()
+        {
+            var basketService = new BasketService();
+            var expected = 0;
+            
+            basketService.UpdateBasketItemQuantity(null, 0);
+            var actual = basketService.GetBasketSubtotal();
+
+            Assert.Equal(expected, actual);
+        }
     }
 }
